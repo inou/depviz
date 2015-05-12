@@ -39,7 +39,9 @@ get_name_version({Name, _, {_, _, ""}}) ->
 get_name_version({Name, _, {_, _, Version}}) ->
     {Name, Version};
 get_name_version({Name, _, {_, _}}) ->
-    {Name, {branch, "HEAD"}}.
+    {Name, {branch, "HEAD"}};
+get_name_version({Name, P, Commit, _Opts}) ->
+    get_name_version({Name, P, Commit}).
 
 graphviz(Deps) ->
     ["digraph G { ",
