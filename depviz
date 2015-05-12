@@ -26,7 +26,9 @@ main(_) ->
 
 
 extract_deps(Dir) ->
-    AppName = lists:last(string:tokens(Dir, "/")),
+    Dir1 = filename:rootname(filename:absname(Dir)),
+    AppName = lists:last(string:tokens(Dir1, "/")),
+    io:format("Looking into ~p~n", [Dir1]),
     Dependecies = case file:consult(Dir ++ "/rebar.config") of
         {ok, RebarConfig} ->
             Deps = proplists:get_value(deps, RebarConfig, []),
@@ -34,7 +36,7 @@ extract_deps(Dir) ->
         {error, _} ->
             []
                   end,
-    {list_to_atom(AppName), Dependecies}.
+    {AppName, Dependecies}.
 
 get_name_version({Name, _, {_, _, ""}}) ->
     {Name, {branch, "HEAD"}};
