@@ -16,7 +16,9 @@ main([Directory, Output]) ->
     DepsDeps = filelib:wildcard(Directory ++ "/deps/*/"),
     DD = [extract_deps(D) || D <- DepsDeps],
 
-    file:write_file(Output++".dot", graphviz(AA ++ DD)),
+    MM = extract_deps(Directory),
+
+    file:write_file(Output++".dot", graphviz([MM|AA] ++ DD)),
     io:format("~s", [os:cmd("dot "++Output++".dot -Tpng -o "++Output++".png")]);
 main(_) ->
     io:format("Two arguments needed~n", []),
